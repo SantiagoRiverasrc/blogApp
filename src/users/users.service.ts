@@ -104,21 +104,24 @@ export class UsersService {
                 throw new NotFoundException('User does not exist')
             }
 
-            if(userUpdate.name_user){
+            if(name_user){
                 user.name_user = name_user
             }
 
-            if(userUpdate.email){
+            if(email){
                 user.email = email
             }
 
-            if(userUpdate.pass){
+            if(pass){
                 let passHash = await bcrypt.hash(pass, 10)
 
                 user.pass = passHash
             }
+            
 
+            await this.userRepository.save(user)
 
+            
             return { message: "User update"}
 
         }catch(err){
