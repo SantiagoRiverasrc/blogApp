@@ -5,6 +5,7 @@ import { userDTO } from 'src/dto/user.dto';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt'
+import { userUpdateDTO } from 'src/dto/userUpdate.dto';
 
 @Injectable()
 export class UsersService {
@@ -89,6 +90,46 @@ export class UsersService {
 
             throw new InternalServerErrorException('Error in the server')
         }
+    }
+
+
+    async updateUser(id: number,userUpdate: userUpdateDTO): Promise<Object>{
+
+        try{
+            const { name_user,email,pass } = userUpdate
+    
+            const user = await this.userRepository.findOneBy({ id_user: id})
+    
+            if(!user){
+                throw new NotFoundException('User does not exist')
+            }
+
+            if(userUpdate.name_user){
+                user.name_user = name_user
+            }
+
+            if(userUpdate.email){
+                user.email = email
+            }
+
+            if(userUpdate.pass){
+                let passHash = await bcrypt.hash(pass, 10)
+
+                user.pass = passHash
+            }
+
+
+            return { message: "User update"}
+
+        }catch(err){
+            if(err instanceof NotFoundException){
+                throw err
+            }
+
+
+            throw new InternalServerErrorException('Error in the server')
+        }
+        
     }
 
 
