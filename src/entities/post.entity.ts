@@ -3,7 +3,7 @@ import { User } from "./user.entity";
 
 
 @Entity('posts')
-export class Post{
+export class Posts{
     @PrimaryGeneratedColumn()
     id_post: number;
 
@@ -16,7 +16,7 @@ export class Post{
     @Column('text')
     content: string;
 
-    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
+    @CreateDateColumn({ type: 'timestamp'})
     date_create: Date
 
     @ManyToOne(() => User, user => user.posts)
