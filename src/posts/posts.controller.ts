@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Posts } from 'src/entities/post.entity';
+import { postDTO } from 'src/dto/post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -15,6 +16,12 @@ export class PostsController {
     @Get('/getPostByUser/:id')
     getByUserPost(@Param('id') id: number){
         return this.postService.getPostByUser(id)
+    }
+
+
+    @Post('/createPost')
+    createPost(@Body() post: postDTO) : Promise<Object>{
+        return this.postService.createPost(post)
     }
 
 

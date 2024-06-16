@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { postDTO } from 'src/dto/post.dto';
 import { Posts } from 'src/entities/post.entity';
 import { User } from 'src/entities/user.entity';
+
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -10,8 +11,9 @@ export class PostsService {
     constructor(
         @InjectRepository(Posts)
         private postRepository : Repository<Posts>,
-        private userRepository : Repository<User>
         
+        @InjectRepository(User)
+        private userRepository : Repository<User>
     ) {}
 
 
