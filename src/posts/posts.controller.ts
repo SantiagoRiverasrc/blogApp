@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Posts } from 'src/entities/post.entity';
 import { postDTO } from 'src/dto/post.dto';
@@ -22,6 +22,12 @@ export class PostsController {
     @Post('/createPost')
     createPost(@Body() post: postDTO) : Promise<Object>{
         return this.postService.createPost(post)
+    }
+
+
+    @Delete('/postDelete/:id')
+    deletePost(@Param() id: number) : Promise<Object>{
+        return this.postService.deletePost(id)
     }
 
 

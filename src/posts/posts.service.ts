@@ -79,4 +79,32 @@ export class PostsService {
     }
 
 
+
+
+
+
+
+    async deletePost(id: number) : Promise<Object>{
+        try{
+            const userDelete = await this.userRepository.delete({ id_user: id})
+
+
+
+            if(userDelete.affected === 0){
+                throw new NotFoundException(`User with id ${id} does not exist`)
+            }
+
+
+            return { message: `User with id ${id} delete success`}
+
+        }catch(e){
+            if(e instanceof NotFoundException){
+                throw e
+            }
+
+            throw new InternalServerErrorException('Error in the server')
+        }
+    }
+
+
 }
