@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { postDTO } from 'src/dto/post.dto';
 import { Posts } from 'src/entities/post.entity';
 import { User } from 'src/entities/user.entity';
+
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -10,8 +11,9 @@ export class PostsService {
     constructor(
         @InjectRepository(Posts)
         private postRepository : Repository<Posts>,
-        private userRepository : Repository<User>
         
+        @InjectRepository(User)
+        private userRepository : Repository<User>
     ) {}
 
 
@@ -74,6 +76,34 @@ export class PostsService {
         }
         
         
+    }
+
+
+
+
+
+
+
+    async deletePost(id: number) : Promise<Object>{
+        try{
+            const userDelete = await this.userRepository.delete({ id_user: id})
+
+
+
+            if(userDelete.affected === 0){
+                throw new NotFoundException(`User with id ${id} does not exist`)
+            }
+
+
+            return { message: `User with id ${id} delete success`}
+
+        }catch(e){
+            if(e instanceof NotFoundException){
+                throw e
+            }
+
+            throw new InternalServerErrorException('Error in the server')
+        }
     }
 
 
