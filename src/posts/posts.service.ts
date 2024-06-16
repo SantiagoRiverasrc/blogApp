@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException, NotFoundException, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { postDTO } from 'src/dto/post.dto';
 import { Posts } from 'src/entities/post.entity';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -8,7 +9,8 @@ import { Repository } from 'typeorm';
 export class PostsService {
     constructor(
         @InjectRepository(Posts)
-        private postRepository : Repository<Posts>
+        private postRepository : Repository<Posts>,
+        private userRepository : Repository<User>
         
     ) {}
 
@@ -40,6 +42,38 @@ export class PostsService {
 
             throw new InternalServerErrorException('Error in the server')
         }
+    }
+
+
+    async createPost(post: postDTO) : Promise<Object>{
+        const { iduser, title, content } = post
+
+        try{
+            const userExist = await this.userRepository.findOneBy({ id_user: iduser})
+
+            if(!userExist){
+                throw new NotFoundException(`The relation with the user of id: ${iduser}, It Can't because user does not exists`)
+            }
+
+            const newPost = {
+                iduser: iduser,
+                title: title,
+                content: content
+            }
+
+            await this.postRepository.save(newPost)
+
+            return { Create: newPost, message: "Post create success"}
+
+        }catch(e){
+            if(e instanceof NotFoundException){
+                throw e
+            }
+
+            throw new InternalServerErrorException('Error in the server')
+        }
+        
+        
     }
 
 
