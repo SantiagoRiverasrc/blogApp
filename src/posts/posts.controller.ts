@@ -26,7 +26,7 @@ export class PostsController {
 
 
     @Delete('/postDelete/:id')
-    deletePost(@Param() id: number) : Promise<Object>{
+    deletePost(@Param('id') id: number) : Promise<Object>{
         return this.postService.deletePost(id)
     }
 
