@@ -86,16 +86,18 @@ export class PostsService {
 
     async deletePost(id: number) : Promise<Object>{
         try{
-            const userDelete = await this.userRepository.delete({ id_user: id})
+            const postDelete = await this.postRepository.delete({ id_post: id})
 
 
 
-            if(userDelete.affected === 0){
-                throw new NotFoundException(`User with id ${id} does not exist`)
+            if(postDelete.affected === 0){
+                throw new NotFoundException(`Post with id ${id} does not exist`)
             }
 
+            
 
-            return { message: `User with id ${id} delete success`}
+
+            return { message: `Post with id ${id} delete success`}
 
         }catch(e){
             if(e instanceof NotFoundException){
@@ -105,6 +107,4 @@ export class PostsService {
             throw new InternalServerErrorException('Error in the server')
         }
     }
-
-
 }
