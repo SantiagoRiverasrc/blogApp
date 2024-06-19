@@ -19,4 +19,10 @@ export class userUpdateDTO{
     @IsString()
     @MinLength(1)
     pass?: string
+
+
+    @IsOptional()
+    @IsString()
+    @MinLength(1)
+    img?:string
 }
