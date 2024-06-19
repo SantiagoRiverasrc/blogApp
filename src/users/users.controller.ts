@@ -43,6 +43,9 @@ export class UsersController {
 
     @Put('/updateUser/:id')
     @ApiOperation({ summary: 'Actualizar un usuario a partir de un id'})
+    @ApiResponse({ status: 200, description: 'Cuando un usuario actualiza algun campo con exito'})
+    @ApiResponse({ status: 404, description: 'No se ha encontrado el usuario debido a que no existe con ese id'})
+    @ApiResponse({ status: 500, description: 'Ha sucedido un error interno en el servidor'})
     updateUser(@Param('id') id: number, @Body() userUpdate : userUpdateDTO) : Promise<Object>{
         return this.usersService.updateUser(id, userUpdate)
     }
@@ -50,6 +53,9 @@ export class UsersController {
 
     @Delete('/deleteUser/:id')
     @ApiOperation({ summary: 'Eliminar un usuario a partir de un id'})
+    @ApiResponse({ status: 200, description: 'Cuando un usuario es eliminado con exito'})
+    @ApiResponse({ status: 404, description: 'El usuario que intentas eliminar no existe con ese id'})
+    @ApiResponse({ status: 500, description: 'Ha sucedido un error interno en el servidor'})
     deleteUser(@Param('id') id: number) : Promise<Object>{
         return this.usersService.deleteUser(id)
     }
