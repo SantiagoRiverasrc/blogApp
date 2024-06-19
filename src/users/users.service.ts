@@ -34,12 +34,13 @@ export class UsersService {
                 throw new NotFoundException('User does not exist')
             }
     
-            const { id_user, name_user, email} = user;
+            const { id_user, name_user, email, img} = user;
 
             return {
                 id_user: id_user,
                 name_user: name_user,
-                email: email
+                email: email,
+                img: img
             }
         }catch(err){
             if(err instanceof NotFoundException){
@@ -96,7 +97,7 @@ export class UsersService {
     async updateUser(id: number,userUpdate: userUpdateDTO): Promise<Object>{
 
         try{
-            const { name_user,email,pass } = userUpdate
+            const { name_user,email,pass,img } = userUpdate
     
             const user = await this.userRepository.findOneBy({ id_user: id})
     
@@ -110,6 +111,10 @@ export class UsersService {
 
             if(email){
                 user.email = email
+            }
+
+            if(img){
+                user.img = img
             }
 
             if(pass){

@@ -2,7 +2,9 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Posts } from 'src/entities/post.entity';
 import { postDTO } from 'src/dto/post.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
     constructor(private postService : PostsService) {}
